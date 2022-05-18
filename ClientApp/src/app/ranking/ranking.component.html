@@ -1,0 +1,71 @@
+<h1 id="tableLabel">Ranking</h1>
+
+<div *ngIf="flg1 == false">test</div>
+
+<input type="checkbox" [(ngModel)]="isWarning" />
+<label [ngClass]="{'warning' : isWarning}">てすと</label>
+
+<br>
+
+<select [(ngModel)]="textType">
+  <option value="normal">通常</option>
+  <option value="warning">注意</option>
+  <option value="danger">危険</option>
+</select>
+<label [ngClass]="{'normal': textType === TextType.NORMAL,
+       'warning': textType === TextType.WARNING,
+       'danger': textType === TextType.DANGER}">
+  テスト
+</label>
+
+
+<table class='table table-striped' aria-labelledby="tableLabel">
+  <thead>
+    <tr>
+      <th>rank</th>
+      <th>name</th>
+      <th>if文</th>
+      <th>switch文</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- for文 -->
+    <tr *ngFor="let ranking of rankings">
+      <td>{{ ranking.rank }}</td>
+      <td>{{ ranking.name }}</td>
+
+      <!-- if文 -->
+      <td *ngIf='ranking.rank == 2; else EtcText'>
+        2位です
+      </td>
+      <ng-template #EtcText>
+        <td>その他</td>
+      </ng-template>
+
+      <!-- switch文 -->
+      <td>
+        <div [ngSwitch]="ranking.rank">
+          <div *ngSwitchCase="3">3位です</div>
+          <div *ngSwitchCase="5">5位です</div>
+          <div *ngSwitchDefault>その他</div>
+        </div>
+      </td>
+
+    </tr>
+  </tbody>
+</table>
+
+<style>
+  .normal {
+    color: green;
+  }
+
+  .warning {
+    color: yellow;
+  }
+
+  .danger {
+    color: red;
+    font-weight: bold;
+  }
+</style>
