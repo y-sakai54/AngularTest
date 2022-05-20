@@ -19,6 +19,16 @@
 </label>
 
 
+
+<!-- フォームのテスト -->
+<form class="form" [formGroup]="reactiveForm">
+  <input type="text" placeholder="name" formControlName="name" required />
+  <div class="margin-auto">
+    <button (click)="reactiveSubmit()" [disabled]="reactiveForm.invalid">登録</button><br>
+  </div>
+</form>
+
+
 <table class='table table-striped' aria-labelledby="tableLabel">
   <thead>
     <tr>

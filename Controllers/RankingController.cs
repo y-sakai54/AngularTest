@@ -1,5 +1,7 @@
 ﻿using AngularTest.Dto;
+using AngularTest.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AngularTest.Controllers;
 
@@ -7,28 +9,35 @@ namespace AngularTest.Controllers;
 [Route("[controller]")]
 public class RankingController : ControllerBase
 {
+    private readonly MyDbContext _context;
+
     private readonly ILogger<RankingController> _logger;
 
-    public RankingController(ILogger<RankingController> logger)
+    public RankingController(MyDbContext context, ILogger<RankingController> logger)
     {
         _logger = logger;
+        _context = context;
     }
 
+    /// <summary>
+    /// 全てのデータを返す
+    /// </summary>
     [HttpGet]
-    public IEnumerable<RankingDto> Get()
+    public async Task<IEnumerable<Ranking>> Get()
     {
-        // テストデータ作る
-        List<RankingDto> rankingList = new List<RankingDto>();
-        for(int i = 1; i < 10; i++)
-        {
-            RankingDto data = new RankingDto()
-            {
-                Rank = i,
-                Name = $"NAME{i}",
-            };
-            rankingList.Add(data);
-        }
-        return rankingList;
+        return  await _context.Rankings.ToListAsync();
+    }
+
+    /// <summary>
+    /// データを追加する。
+    /// </summary>
+    [HttpPost]
+    public async Task<IEnumerable<Ranking>> add([FromBody] Ranking addData)
+    {
+        _context.Rankings.Add(addData);
+        await _context.SaveChangesAsync();
+
+        return await _context.Rankings.ToListAsync();
     }
 }
 
