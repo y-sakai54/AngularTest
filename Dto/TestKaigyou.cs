@@ -2,5 +2,5 @@
 
 public class TestKaigyou
 {
-    public int Id { get; set; }
+    public int Ids { get; set; }
 }
